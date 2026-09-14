@@ -1,0 +1,7 @@
+{
+  "name": "Konfetti",
+  "version": "1.0.0",
+  "author": "Dargoth",
+  "description": "Konfetti nad glownym oknem gry, kiedy wbijesz niebotyczne postepy. Sterowanie: /konfetti (albo /confetti).",
+  "entryPoint": "plugin.ts"
+}

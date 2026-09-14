@@ -1,0 +1,17 @@
+{
+  "name": "arkadia-konfetti",
+  "version": "1.0.0",
+  "description": "Arkadia Web Client plugin - confetti over the main output when improve hits the maximum.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --serve",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@arkadia/plugin-types": "https://delwing.github.io/arkadia-web-client-extension/arkadia-plugin-types.tgz",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.8.0"
+  }
+}
