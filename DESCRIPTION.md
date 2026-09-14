@@ -10,7 +10,6 @@ dokladnie w chwili, w ktorej postepy dobijaja do gory drabinki.
 - **Tylko kiedy naprawde wbijesz** - plugin patrzy na `improve` z GMCP i
   strzela wylacznie przy wejsciu na 15. Zalogowanie sie z gotowymi
   niebotycznymi nie odpala konfetti, zerowanie licznika po wchlonieciu tez nie.
-- **Komunikat w oknie** - `*** NIEBOTYCZNE! ***` obok wysypu, do wylaczenia.
 - **Nie zaslania klikania** - konfetti rysuje sie na osobnym plotnie, ktore nie
   lapie myszy. Klikasz w gre tak samo jak zawsze.
 - **Szanuje ustawienia systemu** - jesli w systemie masz wlaczone ograniczenie
@@ -27,7 +26,6 @@ dokladnie w chwili, w ktorej postepy dobijaja do gory drabinki.
 | `/konfetti status` | pokaz aktualne ustawienia |
 | `/konfetti sila <procent>` | ile konfetti, od 25 do 300 |
 | `/konfetti czas <sekundy>` | jak dlugo leci, od 0.8 do 12 |
-| `/konfetti komunikat on` / `off` | komunikat w oknie gry |
 
 ## Instalacja
 

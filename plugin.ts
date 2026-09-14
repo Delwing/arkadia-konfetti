@@ -59,8 +59,6 @@ interface KonfettiSettings {
   intensity: number;
   /** How long pieces keep falling, in milliseconds. */
   durationMs: number;
-  /** Print a line in the output alongside the burst. */
-  announce: boolean;
   /** Skip the animation when the OS asks for reduced motion. */
   respectReducedMotion: boolean;
 }
@@ -69,7 +67,6 @@ const DEFAULT_SETTINGS: KonfettiSettings = {
   enabled: true,
   intensity: 1,
   durationMs: 3200,
-  announce: true,
   respectReducedMotion: true,
 };
 
@@ -92,7 +89,6 @@ function loadSettings(): KonfettiSettings {
         typeof parsed.durationMs === 'number' && Number.isFinite(parsed.durationMs)
           ? clamp(parsed.durationMs, 800, 12000)
           : DEFAULT_SETTINGS.durationMs,
-      announce: parsed.announce !== false,
       respectReducedMotion: parsed.respectReducedMotion !== false,
     };
   } catch {
@@ -415,19 +411,11 @@ function fire(): void {
   overlay.burst(settings.intensity, settings.durationMs);
 }
 
-function announce(api: PluginApi): void {
-  const gold = api.colors.fromHex('#ffd700');
-  const buffer = new api.AnsiAwareBuffer('*** NIEBOTYCZNE! ***', gold);
-  api.output.print(buffer);
-}
-
 function status(api: PluginApi): void {
   api.output.print(
     `--- Konfetti: ${settings.enabled ? 'wlaczone' : 'wylaczone'}, sila ${Math.round(
       settings.intensity * 100,
-    )}%, czas ${(settings.durationMs / 1000).toFixed(1)}s, komunikat ${
-      settings.announce ? 'wlaczony' : 'wylaczony'
-    }.`,
+    )}%, czas ${(settings.durationMs / 1000).toFixed(1)}s.`,
   );
 }
 
@@ -474,17 +462,7 @@ function handleCommand(api: PluginApi, rawArgs: string | undefined): void {
     return;
   }
 
-  const announceArg = args.match(/^komunikat\s+(on|off|wlacz|wylacz)$/);
-  if (announceArg) {
-    settings.announce = announceArg[1] === 'on' || announceArg[1] === 'wlacz';
-    saveSettings(settings);
-    api.output.print(`--- Konfetti: komunikat ${settings.announce ? 'wlaczony' : 'wylaczony'}.`);
-    return;
-  }
-
-  api.output.print(
-    '--- Konfetti: /konfetti [on|off|status|sila <procent>|czas <sekundy>|komunikat on|off]',
-  );
+  api.output.print('--- Konfetti: /konfetti [on|off|status|sila <procent>|czas <sekundy>]');
 }
 
 export async function init(api: PluginApi): Promise<PluginInfo> {
@@ -508,7 +486,6 @@ export async function init(api: PluginApi): Promise<PluginInfo> {
 
     if (!settings.enabled) return;
     fire();
-    if (settings.announce) announce(api);
   };
 
   const onReset = (): void => {

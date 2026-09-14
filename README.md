@@ -77,7 +77,6 @@ is ever uploaded and the plugin makes no network requests.
 | `enabled` | `true` | automatic burst on max improve |
 | `intensity` | `1` | piece-count multiplier, clamped to 0.25..3 |
 | `durationMs` | `3200` | how long pieces keep falling, clamped to 800..12000 |
-| `announce` | `true` | print `*** NIEBOTYCZNE! ***` alongside the burst |
 | `respectReducedMotion` | `true` | honour the OS reduced-motion setting |
 
 ## Commands
@@ -91,7 +90,6 @@ is ever uploaded and the plugin makes no network requests.
 | `/konfetti status` | print the current settings |
 | `/konfetti sila <procent>` | intensity, 25–300 |
 | `/konfetti czas <sekundy>` | duration, 0.8–12 |
-| `/konfetti komunikat on\|off` | toggle the printed line |
 
 ## Hosted build
 
