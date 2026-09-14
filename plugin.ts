@@ -131,14 +131,17 @@ interface Piece {
   wobbleSpeed: number;
   /** Sideways drift amplitude, px per frame at full wobble. */
   drift: number;
+  /** Milliseconds to wait before the piece enters the scene. */
+  delay: number;
   ttl: number;
   age: number;
 }
 
 /** One frame at 60 fps, used to keep the physics frame-rate independent. */
 const FRAME_MS = 1000 / 60;
-const GRAVITY = 0.32;
-const AIR_DRAG = 0.985;
+/** Small pieces are light: gentle pull, plenty of drag, so they hang and flutter. */
+const GRAVITY = 0.24;
+const AIR_DRAG = 0.976;
 
 function pick<T>(values: readonly T[]): T {
   return values[Math.floor(Math.random() * values.length)];
@@ -188,12 +191,12 @@ class ConfettiOverlay {
       return;
     }
 
-    const count = Math.round(clamp(intensity, 0.25, 3) * 170);
+    const count = Math.round(clamp(intensity, 0.25, 3) * 420);
     const ttl = durationMs;
 
-    // Two corner cannons throw the bulk of the pieces up and inwards, and a
-    // thin rain from above fills the middle of the window while they fall.
-    const perCannon = Math.round(count * 0.4);
+    // Two corner cannons open the burst, and a staggered rain from above keeps
+    // the window busy for the rest of the duration while they fall.
+    const perCannon = Math.round(count * 0.28);
     this.spawnCannon(perCannon, 'left', ttl);
     this.spawnCannon(perCannon, 'right', ttl);
     this.spawnRain(count - perCannon * 2, ttl);
@@ -253,33 +256,39 @@ class ConfettiOverlay {
     const originX = fromLeft ? -10 : this.width + 10;
     const originY = this.height + 10;
     for (let i = 0; i < count; i++) {
-      const speed = randomBetween(11, 20);
+      const speed = randomBetween(13, 24);
       // Aimed at roughly 55 degrees up and inwards, with a wide spread.
       const angle = randomBetween(-1.35, -0.55);
       const dirX = Math.cos(angle) * (fromLeft ? 1 : -1);
-      this.pieces.push(
-        this.makePiece(originX, originY, dirX * speed, Math.sin(angle) * speed, ttl),
-      );
+      const piece = this.makePiece(originX, originY, dirX * speed, Math.sin(angle) * speed, ttl);
+      // A few frames of stagger so the cannon reads as a spray, not a wall.
+      piece.delay = randomBetween(0, 160);
+      this.pieces.push(piece);
     }
   }
 
+  /**
+   * Rain does not fall in as one curtain: each piece waits out its own delay
+   * first, spread over the front half of the burst, so the window keeps getting
+   * fresh confetti for as long as the cannon pieces are still coming down.
+   */
   private spawnRain(count: number, ttl: number): void {
     for (let i = 0; i < count; i++) {
-      this.pieces.push(
-        this.makePiece(
-          randomBetween(0, this.width),
-          randomBetween(-this.height * 0.5, -10),
-          randomBetween(-2, 2),
-          randomBetween(1, 5),
-          ttl,
-        ),
+      const piece = this.makePiece(
+        randomBetween(0, this.width),
+        randomBetween(-this.height * 0.35, -10),
+        randomBetween(-2, 2),
+        randomBetween(1, 5),
+        ttl,
       );
+      piece.delay = randomBetween(0, ttl * 0.55);
+      this.pieces.push(piece);
     }
   }
 
   private makePiece(x: number, y: number, vx: number, vy: number, ttl: number): Piece {
     const shape = pick<Shape>(['rect', 'rect', 'ribbon', 'circle']);
-    const size = randomBetween(6, 12);
+    const size = randomBetween(3, 6.5);
     return {
       x,
       y,
@@ -290,10 +299,11 @@ class ConfettiOverlay {
       color: pick(COLORS),
       shape,
       angle: randomBetween(0, Math.PI * 2),
-      spin: randomBetween(-0.22, 0.22),
+      spin: randomBetween(-0.3, 0.3),
       wobble: randomBetween(0, Math.PI * 2),
-      wobbleSpeed: randomBetween(0.06, 0.16),
-      drift: randomBetween(0.4, 1.6),
+      wobbleSpeed: randomBetween(0.08, 0.2),
+      drift: randomBetween(0.5, 1.9),
+      delay: 0,
       ttl: ttl * randomBetween(0.75, 1.15),
       age: 0,
     };
@@ -321,6 +331,11 @@ class ConfettiOverlay {
 
     const alive: Piece[] = [];
     for (const piece of this.pieces) {
+      if (piece.delay > 0) {
+        piece.delay -= delta * FRAME_MS;
+        alive.push(piece);
+        continue;
+      }
       piece.age += delta * FRAME_MS;
       piece.wobble += piece.wobbleSpeed * delta;
       piece.vy = piece.vy * Math.pow(AIR_DRAG, delta) + GRAVITY * delta;
