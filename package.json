@@ -5,13 +5,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build.mjs",
-    "dev": "node build.mjs --serve",
-    "typecheck": "tsc --noEmit"
+    "build": "arkadia-plugin build",
+    "dev": "arkadia-plugin dev --port 5176",
+    "typecheck": "tsc --noEmit",
+    "types": "arkadia-plugin types"
   },
   "devDependencies": {
-    "@arkadia/plugin-types": "https://delwing.github.io/arkadia-web-client-extension/arkadia-plugin-types.tgz",
-    "esbuild": "^0.24.0",
+    "@arkadia/plugin-types": "npm:@dargoth-client/plugin-types@^1.0.0",
     "typescript": "^5.8.0"
   }
 }

@@ -34,13 +34,19 @@ yarn dev
 Watches sources and serves `dist/` on `http://localhost:5176`, so the plugin
 entry is at `http://localhost:5176/plugin.js`. Add that URL in the client's
 plugin manager, or open the client with
-`?add-script=http://localhost:5176/plugin.js` once.
+`?add-script=http://localhost:5176/plugin.js` once. From then on the client
+reloads the plugin by itself after every rebuild.
 
 Type-check without building:
 
 ```
 yarn typecheck
 ```
+
+Building and serving come from `arkadia-plugin`, which ships with
+`@arkadia/plugin-types` (installed from npm as `@dargoth-client/plugin-types`).
+Every install downloads the types and tools from the deployed client; refresh
+them without reinstalling with `yarn types`.
 
 ## How the trigger works
 
