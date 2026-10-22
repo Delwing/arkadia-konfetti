@@ -11,7 +11,7 @@
     "types": "arkadia-plugin types"
   },
   "devDependencies": {
-    "@arkadia/plugin-types": "npm:@dargoth-client/plugin-types@^1.0.0",
+    "@arkadia/plugin-types": "npm:@dargoth-client/plugin-types@^1.0.1",
     "typescript": "^5.8.0"
   }
 }

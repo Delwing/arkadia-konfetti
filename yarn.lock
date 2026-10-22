@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@arkadia/plugin-types@npm:@dargoth-client/plugin-types@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@dargoth-client/plugin-types/-/plugin-types-1.0.0.tgz#a9cb759b16f5d027816bae7f042f9776d435a92b"
-  integrity sha512-ak7wc5HWaT8oayRM6YWiGiFiZK68+eIiLbxLCnU3gqjZBWe4H6B83dMVG9mCQtmwf6hByI0vRFxzLi1bCC3+sw==
+"@arkadia/plugin-types@npm:@dargoth-client/plugin-types@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@dargoth-client/plugin-types/-/plugin-types-1.0.1.tgz#c3a45888f5547ff490b8dad7b3249d15a18e027e"
+  integrity sha512-2Ci0VDBNkqPBiJpC7s/IootAfI8LParU4LNiqc+f5rporUhnXoOU+Ts00fYcOuncra4KnegG0ekizAa0JnJVXA==
   dependencies:
     esbuild "^0.28.0"
 
